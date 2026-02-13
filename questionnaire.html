@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Questionnaire | Crypto Freedom Debit Card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #5046e5;
+      --primary-dark: #3d35b5;
+      --accent: #00d4aa;
+      --dark: #0f0f0f;
+      --gray-900: #1a1a1a;
+      --gray-700: #374151;
+      --gray-500: #6b7280;
+      --gray-300: #d1d5db;
+      --gray-100: #f3f4f6;
+      --white: #ffffff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--gray-100);
+      z-index: 1000;
+      padding: 1rem 2rem;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--dark);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+    .questionnaire-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 7rem 1.5rem 4rem;
+    }
+    .questionnaire-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .questionnaire-header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+    .questionnaire-header p {
+      color: var(--gray-500);
+      font-size: 1rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .progress-container {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .progress-bar {
+      height: 8px;
+      background: var(--gray-100);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      color: var(--gray-500);
+    }
+    .form-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .form-step { display: none; }
+    .form-step.active { display: block; }
+    .question-group { margin-bottom: 2rem; }
+    .question-group:last-child { margin-bottom: 0; }
+    .question-label {
+      display: block;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    .question-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      margin-right: 0.75rem;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .option-item { position: relative; }
+    .option-item input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      background: var(--gray-100);
+      border: 2px solid transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9375rem;
+      color: var(--gray-700);
+    }
+    .option-label:hover {
+      background: var(--white);
+      border-color: var(--gray-300);
+    }
+    .option-item input:checked + .option-label {
+      background: rgba(80, 70, 229, 0.1);
+      border-color: var(--primary);
+      color: var(--dark);
+    }
+    .option-indicator {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--gray-300);
+      border-radius: 50%;
+      margin-right: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .option-item input[type="checkbox"] + .option-label .option-indicator {
+      border-radius: 4px;
+    }
+    .option-item input:checked + .option-label .option-indicator {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .option-item input:checked + .option-label .option-indicator::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+    }
+    .option-item input[type="checkbox"]:checked + .option-label .option-indicator::after {
+      width: 10px;
+      height: 6px;
+      background: transparent;
+      border-left: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: rotate(-45deg);
+      margin-bottom: 2px;
+      border-radius: 0;
+    }
+    .text-input {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      border: 2px solid var(--gray-300);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.2s;
+      background: var(--white);
+    }
+    .text-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(80, 70, 229, 0.1);
+    }
+    textarea.text-input { min-height: 120px; resize: vertical; }
+    .number-input-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .number-input {
+      width: 120px;
+      padding: 1rem 1.25rem;
+      border: 2px solid var(--gray-300);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      text-align: center;
+    }
+    .number-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .range-container { padding: 1rem 0; }
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--gray-500);
+    }
+    .range-input {
+      width: 100%;
+      height: 8px;
+      -webkit-appearance: none;
+      background: var(--gray-100);
+      border-radius: 4px;
+      outline: none;
+    }
+    .range-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      background: var(--primary);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(80, 70, 229, 0.3);
+    }
+    .range-value {
+      text-align: center;
+      margin-top: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .select-input {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      border: 2px solid var(--gray-300);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: var(--white);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 20px;
+    }
+    .select-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .state-select { margin-top: 1rem; display: none; }
+    .state-select.visible { display: block; }
+    .other-input { margin-top: 0.75rem; display: none; }
+    .other-input.visible { display: block; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: var(--gray-100);
+      color: var(--gray-700);
+    }
+    .btn-secondary:hover { background: var(--gray-300); }
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--gray-100);
+    }
+    .disqualification-message, .thank-you-message {
+      text-align: center;
+      padding: 2rem;
+    }
+    .disqualification-message h2, .thank-you-message h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+    .disqualification-message p, .thank-you-message p {
+      color: var(--gray-500);
+      margin-bottom: 1.5rem;
+    }
+    .thank-you-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+    }
+    .thank-you-icon svg { width: 40px; height: 40px; color: white; }
+    .info-box {
+      background: var(--gray-100);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      font-size: 0.9375rem;
+      color: var(--gray-700);
+    }
+    @media (max-width: 640px) {
+      .questionnaire-container { padding: 6rem 1rem 2rem; }
+      .form-card { padding: 1.5rem; }
+      .form-actions { flex-direction: column; gap: 1rem; }
+      .form-actions .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">3F</div>
+        Freedom From Fiat
+      </a>
+    </div>
+  </nav>
+
+  <div class="questionnaire-container">
+    <div class="questionnaire-header">
+      <h1>Client Validation Questionnaire</h1>
+      <p>Help us build a revolutionary crypto debit card by sharing your views and experiences with cryptocurrency.</p>
+    </div>
+
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+      <div class="progress-text">
+        <span id="stepIndicator">Step 1 of 9</span>
+        <span id="percentComplete">0% complete</span>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <form id="questionnaireForm">
+        
+        <!-- Step 1: Crypto Ownership & Intent -->
+        <div class="form-step active" data-step="1">
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">1</span>Do you own cryptocurrency?</label>
+            <div class="options-list">
+              <div class="option-item">
+                <input type="radio" name="q1_own_crypto" id="q1_yes" value="yes" required>
+                <label class="option-label" for="q1_yes"><span class="option-indicator"></span>Yes</label>
+              </div>
+              <div class="option-item">
+                <input type="radio" name="q1_own_crypto" id="q1_no" value="no">
+                <label class="option-label" for="q1_no"><span class="option-indicator"></span>No</label>
+              </div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">2</span>Have you ever used crypto to pay for a purchase?</label>
+            <div class="options-list">
+              <div class="option-item">
+                <input type="radio" name="q2_used_crypto" id="q2_yes" value="yes" required>
+                <label class="option-label" for="q2_yes"><span class="option-indicator"></span>Yes</label>
+              </div>
+              <div class="option-item">
+                <input type="radio" name="q2_used_crypto" id="q2_no" value="no">
+                <label class="option-label" for="q2_no"><span class="option-indicator"></span>No</label>
+              </div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">3</span>Would you like to use your cryptocurrency for making purchases?</label>
+            <div class="options-list">
+              <div class="option-item">
+                <input type="radio" name="q3_want_spend" id="q3_yes" value="yes" required>
+                <label class="option-label" for="q3_yes"><span class="option-indicator"></span>Yes</label>
+              </div>
+              <div class="option-item">
+                <input type="radio" name="q3_want_spend" id="q3_no" value="no">
+                <label class="option-label" for="q3_no"><span class="option-indicator"></span>No</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Barriers & Plans -->
+        <div class="form-step" data-step="2">
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">4</span>What would stop you from using your cryptocurrency for purchases? (check all that apply)</label>
+            <div class="options-list">
+              <div class="option-item"><input type="checkbox" name="q4_barriers" id="q4_a" value="investment"><label class="option-label" for="q4_a"><span class="option-indicator"></span>I want to hold my cryptocurrency for investment purposes</label></div>
+              <div class="option-item"><input type="checkbox" name="q4_barriers" id="q4_b" value="merchants"><label class="option-label" for="q4_b"><span class="option-indicator"></span>Merchants/stores won't accept cryptocurrency as payment</label></div>
+              <div class="option-item"><input type="checkbox" name="q4_barriers" id="q4_c" value="taxes"><label class="option-label" for="q4_c"><span class="option-indicator"></span>I am worried about my tax reporting obligations</label></div>
+              <div class="option-item"><input type="checkbox" name="q4_barriers" id="q4_d" value="no_benefit"><label class="option-label" for="q4_d"><span class="option-indicator"></span>It's not worth the trouble. I see no benefit over regular fiat.</label></div>
+              <div class="option-item"><input type="checkbox" name="q4_barriers" id="q4_e" value="other"><label class="option-label" for="q4_e"><span class="option-indicator"></span>Other</label></div>
+            </div>
+            <div class="other-input" id="q4_other_container"><input type="text" class="text-input" name="q4_other_text" placeholder="Please specify..."></div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">5</span>If you own cryptocurrency, how did you acquire it? (check all that apply)</label>
+            <div class="options-list">
+              <div class="option-item"><input type="checkbox" name="q5_acquisition" id="q5_a" value="exchange"><label class="option-label" for="q5_a"><span class="option-indicator"></span>I bought it on an exchange</label></div>
+              <div class="option-item"><input type="checkbox" name="q5_acquisition" id="q5_b" value="gift"><label class="option-label" for="q5_b"><span class="option-indicator"></span>It was a gift</label></div>
+              <div class="option-item"><input type="checkbox" name="q5_acquisition" id="q5_c" value="rewards"><label class="option-label" for="q5_c"><span class="option-indicator"></span>I earned it from a rewards program</label></div>
+              <div class="option-item"><input type="checkbox" name="q5_acquisition" id="q5_d" value="payment"><label class="option-label" for="q5_d"><span class="option-indicator"></span>I received it as payment for a real-world transaction</label></div>
+              <div class="option-item"><input type="checkbox" name="q5_acquisition" id="q5_e" value="other"><label class="option-label" for="q5_e"><span class="option-indicator"></span>Other</label></div>
+            </div>
+            <div class="other-input" id="q5_other_container"><input type="text" class="text-input" name="q5_other_text" placeholder="Please specify..."></div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">6</span>What do you plan on doing with your cryptocurrency?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q6_plans" id="q6_a" value="long_term" required><label class="option-label" for="q6_a"><span class="option-indicator"></span>Hold it for a long-term gain (To infinity and beyond…)</label></div>
+              <div class="option-item"><input type="radio" name="q6_plans" id="q6_b" value="short_term"><label class="option-label" for="q6_b"><span class="option-indicator"></span>Hold it for a short term gain</label></div>
+              <div class="option-item"><input type="radio" name="q6_plans" id="q6_c" value="discretionary"><label class="option-label" for="q6_c"><span class="option-indicator"></span>Spend it on a discretionary purchase (e.g. a vacation)</label></div>
+              <div class="option-item"><input type="radio" name="q6_plans" id="q6_d" value="household"><label class="option-label" for="q6_d"><span class="option-indicator"></span>Spend it on household expenses (e.g. groceries or utilities)</label></div>
+              <div class="option-item"><input type="radio" name="q6_plans" id="q6_e" value="dont_know"><label class="option-label" for="q6_e"><span class="option-indicator"></span>I don't know</label></div>
+              <div class="option-item"><input type="radio" name="q6_plans" id="q6_f" value="other"><label class="option-label" for="q6_f"><span class="option-indicator"></span>Other</label></div>
+            </div>
+            <div class="other-input" id="q6_other_container"><input type="text" class="text-input" name="q6_other_text" placeholder="Please specify..."></div>
+          </div>
+        </div>
+
+        <!-- Step 3: Payment Habits -->
+        <div class="form-step" data-step="3">
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">7</span>Do you use a credit card or debit card for daily spending? (check all that apply)</label>
+            <div class="options-list">
+              <div class="option-item"><input type="checkbox" name="q7_daily_payment" id="q7_a" value="credit"><label class="option-label" for="q7_a"><span class="option-indicator"></span>Credit Card</label></div>
+              <div class="option-item"><input type="checkbox" name="q7_daily_payment" id="q7_b" value="debit"><label class="option-label" for="q7_b"><span class="option-indicator"></span>Debit Card</label></div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">8</span>What payment method do you use for monthly spending? (check all that apply)</label>
+            <div class="options-list">
+              <div class="option-item"><input type="checkbox" name="q8_monthly_payment" id="q8_a" value="credit"><label class="option-label" for="q8_a"><span class="option-indicator"></span>Credit Card</label></div>
+              <div class="option-item"><input type="checkbox" name="q8_monthly_payment" id="q8_b" value="debit"><label class="option-label" for="q8_b"><span class="option-indicator"></span>Debit Card</label></div>
+              <div class="option-item"><input type="checkbox" name="q8_monthly_payment" id="q8_c" value="bill_pay"><label class="option-label" for="q8_c"><span class="option-indicator"></span>Bill pay</label></div>
+              <div class="option-item"><input type="checkbox" name="q8_monthly_payment" id="q8_d" value="other"><label class="option-label" for="q8_d"><span class="option-indicator"></span>Other</label></div>
+            </div>
+            <div class="other-input" id="q8_other_container"><input type="text" class="text-input" name="q8_other_text" placeholder="Please specify..."></div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">9</span>Do you use a mobile app for payment?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q9_mobile_payment" id="q9_yes" value="yes" required><label class="option-label" for="q9_yes"><span class="option-indicator"></span>Yes</label></div>
+              <div class="option-item"><input type="radio" name="q9_mobile_payment" id="q9_no" value="no"><label class="option-label" for="q9_no"><span class="option-indicator"></span>No</label></div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">10</span>How many times a day do you use your debit, credit card, or mobile app to make a purchase?</label>
+            <div class="number-input-container">
+              <input type="number" class="number-input" name="q10_daily_purchases" min="0" max="50" value="3">
+              <span>times per day</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Demographics -->
+        <div class="form-step" data-step="4">
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">11</span>Where do you live?</label>
+            <select class="select-input" name="q11_country" id="countrySelect" required>
+              <option value="">Select your country...</option>
+              <option value="US">United States</option>
+              <option value="CA">Canada</option>
+              <option value="UK">United Kingdom</option>
+              <option value="DE">Germany</option>
+              <option value="FR">France</option>
+              <option value="AU">Australia</option>
+              <option value="JP">Japan</option>
+              <option value="SG">Singapore</option>
+              <option value="CH">Switzerland</option>
+              <option value="OTHER">Other</option>
+            </select>
+            <div class="state-select" id="stateSelectContainer">
+              <select class="select-input" name="q11_state" id="stateSelect">
+                <option value="">Select your state...</option>
+                <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option><option value="DC">Washington DC</option>
+              </select>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">12</span>What is your profession?</label>
+            <input type="text" class="text-input" name="q12_profession" placeholder="Enter your profession..." maxlength="256">
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">13</span>What is your income?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q13_income" id="q13_a" value="under_50k" required><label class="option-label" for="q13_a"><span class="option-indicator"></span>Less than $50k</label></div>
+              <div class="option-item"><input type="radio" name="q13_income" id="q13_b" value="50k_100k"><label class="option-label" for="q13_b"><span class="option-indicator"></span>$50k up to $100k</label></div>
+              <div class="option-item"><input type="radio" name="q13_income" id="q13_c" value="100k_200k"><label class="option-label" for="q13_c"><span class="option-indicator"></span>$100k up to $200k</label></div>
+              <div class="option-item"><input type="radio" name="q13_income" id="q13_d" value="200k_250k"><label class="option-label" for="q13_d"><span class="option-indicator"></span>$200k up to $250k</label></div>
+              <div class="option-item"><input type="radio" name="q13_income" id="q13_e" value="250k_600k"><label class="option-label" for="q13_e"><span class="option-indicator"></span>$250k up to $600k</label></div>
+              <div class="option-item"><input type="radio" name="q13_income" id="q13_f" value="over_600k"><label class="option-label" for="q13_f"><span class="option-indicator"></span>Over $600k</label></div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">14</span>What percentage of your income is earned in cryptocurrency?</label>
+            <div class="range-container">
+              <div class="range-labels"><span>0%</span><span>100%</span></div>
+              <input type="range" class="range-input" name="q14_crypto_income" min="0" max="100" value="0" id="cryptoIncomeRange">
+              <div class="range-value" id="cryptoIncomeValue">0%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5: Net Worth & Budget -->
+        <div class="form-step" data-step="5">
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">15</span>What is your liquid net worth?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q15_net_worth" id="q15_a" value="under_100k" required><label class="option-label" for="q15_a"><span class="option-indicator"></span>Less than $100k</label></div>
+              <div class="option-item"><input type="radio" name="q15_net_worth" id="q15_b" value="100k_250k"><label class="option-label" for="q15_b"><span class="option-indicator"></span>$100k up to $250k</label></div>
+              <div class="option-item"><input type="radio" name="q15_net_worth" id="q15_c" value="250k_500k"><label class="option-label" for="q15_c"><span class="option-indicator"></span>$250k up to $500k</label></div>
+              <div class="option-item"><input type="radio" name="q15_net_worth" id="q15_d" value="500k_1m"><label class="option-label" for="q15_d"><span class="option-indicator"></span>$500k up to $1M</label></div>
+              <div class="option-item"><input type="radio" name="q15_net_worth" id="q15_e" value="1m_5m"><label class="option-label" for="q15_e"><span class="option-indicator"></span>$1M up to $5M</label></div>
+              <div class="option-item"><input type="radio" name="q15_net_worth" id="q15_f" value="5m_30m"><label class="option-label" for="q15_f"><span class="option-indicator"></span>$5M up to $30M</label></div>
+              <div class="option-item"><input type="radio" name="q15_net_worth" id="q15_g" value="over_30m"><label class="option-label" for="q15_g"><span class="option-indicator"></span>Over $30M</label></div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">16</span>What percentage of your liquid net worth is in cryptocurrency?</label>
+            <div class="range-container">
+              <div class="range-labels"><span>0%</span><span>100%</span></div>
+              <input type="range" class="range-input" name="q16_crypto_net_worth" min="0" max="100" value="0" id="cryptoNetWorthRange">
+              <div class="range-value" id="cryptoNetWorthValue">0%</div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">17</span>What is your average monthly budget for general & household expenses?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q17_monthly_budget" id="q17_a" value="under_5k" required><label class="option-label" for="q17_a"><span class="option-indicator"></span>Less than $5k</label></div>
+              <div class="option-item"><input type="radio" name="q17_monthly_budget" id="q17_b" value="5k_10k"><label class="option-label" for="q17_b"><span class="option-indicator"></span>$5k up to $10k</label></div>
+              <div class="option-item"><input type="radio" name="q17_monthly_budget" id="q17_c" value="10k_20k"><label class="option-label" for="q17_c"><span class="option-indicator"></span>$10k up to $20k</label></div>
+              <div class="option-item"><input type="radio" name="q17_monthly_budget" id="q17_d" value="20k_50k"><label class="option-label" for="q17_d"><span class="option-indicator"></span>$20k up to $50k</label></div>
+              <div class="option-item"><input type="radio" name="q17_monthly_budget" id="q17_e" value="over_50k"><label class="option-label" for="q17_e"><span class="option-indicator"></span>Over $50k</label></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 6: Attitudes -->
+        <div class="form-step" data-step="6">
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">18</span>On a scale of 1 to 10, how concerned are you about inflation?</label>
+            <div class="range-container">
+              <div class="range-labels"><span>1 - Not concerned</span><span>10 - Very concerned</span></div>
+              <input type="range" class="range-input" name="q18_inflation_concern" min="1" max="10" value="5" id="inflationRange">
+              <div class="range-value" id="inflationValue">5</div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">19</span>How much do you consider capital gains taxes when selling an investment?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q19_cap_gains" id="q19_a" value="not_at_all" required><label class="option-label" for="q19_a"><span class="option-indicator"></span>Not at all, they do not affect my decision to sell my investments</label></div>
+              <div class="option-item"><input type="radio" name="q19_cap_gains" id="q19_b" value="somewhat"><label class="option-label" for="q19_b"><span class="option-indicator"></span>Somewhat important, they are one of several factors I use to decide when to sell</label></div>
+              <div class="option-item"><input type="radio" name="q19_cap_gains" id="q19_c" value="very"><label class="option-label" for="q19_c"><span class="option-indicator"></span>Very important, my capital gains status is a major factor in when I sell</label></div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">20</span>On a scale of 1 to 10, what is your perception of the usefulness of cryptocurrency?</label>
+            <div class="range-container">
+              <div class="range-labels"><span>1 - Not useful</span><span>10 - Extremely useful</span></div>
+              <input type="range" class="range-input" name="q20_crypto_usefulness" min="1" max="10" value="5" id="usefulnessRange">
+              <div class="range-value" id="usefulnessValue">5</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 7: Banking -->
+        <div class="form-step" data-step="7">
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">21</span>How many banks do you use to custody your fiat money?</label>
+            <div class="number-input-container">
+              <input type="number" class="number-input" name="q21_num_banks" min="0" max="20" value="2">
+              <span>banks</span>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">22</span>How satisfied are you with your favorite bank?</label>
+            <div class="range-container">
+              <div class="range-labels"><span>1 - Very unsatisfied</span><span>10 - Very satisfied</span></div>
+              <input type="range" class="range-input" name="q22_bank_satisfaction" min="1" max="10" value="5" id="bankSatRange">
+              <div class="range-value" id="bankSatValue">5</div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">23</span>What is your biggest issue or problem with your bank?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q23_bank_issue" id="q23_a" value="high_fees" required><label class="option-label" for="q23_a"><span class="option-indicator"></span>High fees</label></div>
+              <div class="option-item"><input type="radio" name="q23_bank_issue" id="q23_b" value="low_interest"><label class="option-label" for="q23_b"><span class="option-indicator"></span>Low interest</label></div>
+              <div class="option-item"><input type="radio" name="q23_bank_issue" id="q23_c" value="poor_service"><label class="option-label" for="q23_c"><span class="option-indicator"></span>Poor customer service</label></div>
+              <div class="option-item"><input type="radio" name="q23_bank_issue" id="q23_d" value="bad_ux"><label class="option-label" for="q23_d"><span class="option-indicator"></span>Online user experience</label></div>
+              <div class="option-item"><input type="radio" name="q23_bank_issue" id="q23_e" value="security"><label class="option-label" for="q23_e"><span class="option-indicator"></span>Online security</label></div>
+              <div class="option-item"><input type="radio" name="q23_bank_issue" id="q23_f" value="other"><label class="option-label" for="q23_f"><span class="option-indicator"></span>Other</label></div>
+            </div>
+            <div class="other-input" id="q23_other_container"><input type="text" class="text-input" name="q23_other_text" placeholder="Please specify..."></div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">24</span>What do you like most about your bank?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q24_bank_like" id="q24_a" value="convenience" required><label class="option-label" for="q24_a"><span class="option-indicator"></span>Convenience</label></div>
+              <div class="option-item"><input type="radio" name="q24_bank_like" id="q24_b" value="security"><label class="option-label" for="q24_b"><span class="option-indicator"></span>Security</label></div>
+              <div class="option-item"><input type="radio" name="q24_bank_like" id="q24_c" value="products"><label class="option-label" for="q24_c"><span class="option-indicator"></span>Product suite</label></div>
+              <div class="option-item"><input type="radio" name="q24_bank_like" id="q24_d" value="rates"><label class="option-label" for="q24_d"><span class="option-indicator"></span>Interest rates</label></div>
+              <div class="option-item"><input type="radio" name="q24_bank_like" id="q24_e" value="other"><label class="option-label" for="q24_e"><span class="option-indicator"></span>Other</label></div>
+            </div>
+            <div class="other-input" id="q24_other_container"><input type="text" class="text-input" name="q24_other_text" placeholder="Please specify..."></div>
+          </div>
+        </div>
+
+        <!-- Step 8: Custody & Product Interest -->
+        <div class="form-step" data-step="8">
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">25</span>Do you self-custody your cryptocurrency?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q25_self_custody" id="q25_yes" value="yes" required><label class="option-label" for="q25_yes"><span class="option-indicator"></span>Yes</label></div>
+              <div class="option-item"><input type="radio" name="q25_self_custody" id="q25_no" value="no"><label class="option-label" for="q25_no"><span class="option-indicator"></span>No</label></div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">26</span>How important is it to you to custody and control your own wealth?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q26_custody_importance" id="q26_a" value="not_important" required><label class="option-label" for="q26_a"><span class="option-indicator"></span>Not important: I don't like the idea as I find it too risky with little benefit.</label></div>
+              <div class="option-item"><input type="radio" name="q26_custody_importance" id="q26_b" value="probably_not"><label class="option-label" for="q26_b"><span class="option-indicator"></span>Probably not: The risks outweigh the benefits.</label></div>
+              <div class="option-item"><input type="radio" name="q26_custody_importance" id="q26_c" value="interesting"><label class="option-label" for="q26_c"><span class="option-indicator"></span>Interesting: I would consider it but want to understand the risks and benefits.</label></div>
+              <div class="option-item"><input type="radio" name="q26_custody_importance" id="q26_d" value="very_interested"><label class="option-label" for="q26_d"><span class="option-indicator"></span>Very interested: I see the benefits and will likely self-custody some of my wealth.</label></div>
+              <div class="option-item"><input type="radio" name="q26_custody_importance" id="q26_e" value="extremely_interested"><label class="option-label" for="q26_e"><span class="option-indicator"></span>Extremely interested: I want to take custody of my wealth as soon as possible.</label></div>
+            </div>
+          </div>
+          <div class="info-box">
+            <strong>About Our Product:</strong> Our crypto debit card lets you spend your cryptocurrency by converting it to fiat at the point of sale for delivery to the merchant. We also offer a tax management solution to optimize your capital gains tax obligation by specifically identifying which purchase lot will be sold at the time of the transaction. We will KYC your account and provide you with a custodial wallet for the crypto you want to spend.
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">27</span>How would you view this product?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q27_product_interest" id="q27_a" value="not_interested" required><label class="option-label" for="q27_a"><span class="option-indicator"></span>Not at all interested. I would not want to use this product.</label></div>
+              <div class="option-item"><input type="radio" name="q27_product_interest" id="q27_b" value="neutral"><label class="option-label" for="q27_b"><span class="option-indicator"></span>Neutral. I am no more interested in this crypto debit card than any other on the market.</label></div>
+              <div class="option-item"><input type="radio" name="q27_product_interest" id="q27_c" value="interested"><label class="option-label" for="q27_c"><span class="option-indicator"></span>Interested. I would be open to getting this card and seeing how it works.</label></div>
+              <div class="option-item"><input type="radio" name="q27_product_interest" id="q27_d" value="very_interested"><label class="option-label" for="q27_d"><span class="option-indicator"></span>Very interested. This is the debit card that I've been waiting for.</label></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 9: Final Questions -->
+        <div class="form-step" data-step="9">
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">28</span>What features of this card do you object to? (check all that apply)</label>
+            <div class="options-list">
+              <div class="option-item"><input type="checkbox" name="q28_objections" id="q28_a" value="no_spend"><label class="option-label" for="q28_a"><span class="option-indicator"></span>I do not want to spend my crypto</label></div>
+              <div class="option-item"><input type="checkbox" name="q28_objections" id="q28_b" value="no_tax_share"><label class="option-label" for="q28_b"><span class="option-indicator"></span>I do not want to share my tax information with a 3rd party</label></div>
+              <div class="option-item"><input type="checkbox" name="q28_objections" id="q28_c" value="no_kyc"><label class="option-label" for="q28_c"><span class="option-indicator"></span>I don't want to give personal information to comply with KYC rules</label></div>
+              <div class="option-item"><input type="checkbox" name="q28_objections" id="q28_d" value="no_custodial"><label class="option-label" for="q28_d"><span class="option-indicator"></span>I don't want to transfer any crypto to a custodial wallet</label></div>
+              <div class="option-item"><input type="checkbox" name="q28_objections" id="q28_e" value="no_taxes"><label class="option-label" for="q28_e"><span class="option-indicator"></span>I don't want to worry about capital gains taxes when making purchases</label></div>
+              <div class="option-item"><input type="checkbox" name="q28_objections" id="q28_f" value="not_worth_it"><label class="option-label" for="q28_f"><span class="option-indicator"></span>The card is not worth the trouble</label></div>
+              <div class="option-item"><input type="checkbox" name="q28_objections" id="q28_g" value="other"><label class="option-label" for="q28_g"><span class="option-indicator"></span>Other</label></div>
+            </div>
+            <div class="other-input" id="q28_other_container"><input type="text" class="text-input" name="q28_other_text" placeholder="Please specify..."></div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">29</span>What features are most interesting to you? (check all that apply)</label>
+            <div class="options-list">
+              <div class="option-item"><input type="checkbox" name="q29_interests" id="q29_a" value="spend_crypto"><label class="option-label" for="q29_a"><span class="option-indicator"></span>Being able to spend my crypto holdings for goods and services</label></div>
+              <div class="option-item"><input type="checkbox" name="q29_interests" id="q29_b" value="no_fiat"><label class="option-label" for="q29_b"><span class="option-indicator"></span>Not needing to hold any fiat currency</label></div>
+              <div class="option-item"><input type="checkbox" name="q29_interests" id="q29_c" value="tax_management"><label class="option-label" for="q29_c"><span class="option-indicator"></span>Being able to manage my capital gains taxes</label></div>
+              <div class="option-item"><input type="checkbox" name="q29_interests" id="q29_d" value="self_custody"><label class="option-label" for="q29_d"><span class="option-indicator"></span>Enabling Self-Custody of my wealth</label></div>
+              <div class="option-item"><input type="checkbox" name="q29_interests" id="q29_e" value="inflation"><label class="option-label" for="q29_e"><span class="option-indicator"></span>Not losing wealth from inflation</label></div>
+              <div class="option-item"><input type="checkbox" name="q29_interests" id="q29_f" value="crypto_adoption"><label class="option-label" for="q29_f"><span class="option-indicator"></span>Helping establish crypto as a viable currency</label></div>
+              <div class="option-item"><input type="checkbox" name="q29_interests" id="q29_g" value="other"><label class="option-label" for="q29_g"><span class="option-indicator"></span>Other</label></div>
+            </div>
+            <div class="other-input" id="q29_other_container"><input type="text" class="text-input" name="q29_other_text" placeholder="Please specify..."></div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">30</span>Which other crypto debit cards do you use, if any? (check all that apply)</label>
+            <div class="options-list">
+              <div class="option-item"><input type="checkbox" name="q30_other_cards" id="q30_a" value="coinbase"><label class="option-label" for="q30_a"><span class="option-indicator"></span>Coinbase</label></div>
+              <div class="option-item"><input type="checkbox" name="q30_other_cards" id="q30_b" value="binance"><label class="option-label" for="q30_b"><span class="option-indicator"></span>Binance</label></div>
+              <div class="option-item"><input type="checkbox" name="q30_other_cards" id="q30_c" value="crypto_com"><label class="option-label" for="q30_c"><span class="option-indicator"></span>Crypto.com</label></div>
+              <div class="option-item"><input type="checkbox" name="q30_other_cards" id="q30_d" value="venmo"><label class="option-label" for="q30_d"><span class="option-indicator"></span>Venmo</label></div>
+              <div class="option-item"><input type="checkbox" name="q30_other_cards" id="q30_e" value="none"><label class="option-label" for="q30_e"><span class="option-indicator"></span>None</label></div>
+              <div class="option-item"><input type="checkbox" name="q30_other_cards" id="q30_f" value="other"><label class="option-label" for="q30_f"><span class="option-indicator"></span>Other</label></div>
+            </div>
+            <div class="other-input" id="q30_other_container"><input type="text" class="text-input" name="q30_other_text" placeholder="Please specify..."></div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">31</span>How important is a rewards program to you when selecting what debit card to use?</label>
+            <div class="options-list">
+              <div class="option-item"><input type="radio" name="q31_rewards" id="q31_a" value="not_important" required><label class="option-label" for="q31_a"><span class="option-indicator"></span>Not important: I think rewards programs are more trouble than they're worth</label></div>
+              <div class="option-item"><input type="radio" name="q31_rewards" id="q31_b" value="somewhat"><label class="option-label" for="q31_b"><span class="option-indicator"></span>Somewhat important: A rewards program is one of several factors in my choice</label></div>
+              <div class="option-item"><input type="radio" name="q31_rewards" id="q31_c" value="very"><label class="option-label" for="q31_c"><span class="option-indicator"></span>Very important: I would not use a debit card unless it has a rewards program</label></div>
+              <div class="option-item"><input type="radio" name="q31_rewards" id="q31_d" value="most"><label class="option-label" for="q31_d"><span class="option-indicator"></span>Most important: I choose a debit card solely based on how generous the rewards are</label></div>
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">32</span>If you would like to participate in a Client Focus discussion, please share your contact details.</label>
+            <div style="margin-bottom: 1rem;">
+              <label style="display: block; font-size: 0.875rem; color: var(--gray-500); margin-bottom: 0.5rem;">Preferred method of contact</label>
+              <select class="select-input" name="q32_contact_method">
+                <option value="">Select contact method (optional)...</option>
+                <option value="phone">Phone</option>
+                <option value="email">Email</option>
+                <option value="telegram">Telegram</option>
+                <option value="signal">Signal</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.875rem; color: var(--gray-500); margin-bottom: 0.5rem;">Contact information</label>
+              <input type="text" class="text-input" name="q32_contact_info" placeholder="Your phone, email, or username...">
+            </div>
+          </div>
+          <div class="question-group">
+            <label class="question-label"><span class="question-number">33</span>Do you have any other comments on our proposed debit card, or on cryptocurrency in general?</label>
+            <textarea class="text-input" name="q33_comments" placeholder="Share your thoughts..."></textarea>
+          </div>
+        </div>
+
+        <!-- Disqualification Screen -->
+        <div class="form-step" data-step="disqualified">
+          <div class="disqualification-message">
+            <h2>Thanks for Your Interest</h2>
+            <p>Our product is focused on people who want to use their cryptocurrency for purchases. Based on your responses, that doesn't seem to be one of your objectives right now.</p>
+            <p>If you change your mind, we'd love to have you back!</p>
+            <a href="index.html" class="btn btn-primary">Return Home</a>
+          </div>
+        </div>
+
+        <!-- Thank You Screen -->
+        <div class="form-step" data-step="complete">
+          <div class="thank-you-message">
+            <div class="thank-you-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2>Thank You!</h2>
+            <p>Your responses have been recorded. We appreciate your time and input in helping us build this revolutionary financial product.</p>
+            <p>We'll be in touch if you indicated interest in a Client Focus discussion.</p>
+            <a href="index.html" class="btn btn-primary">Return Home</a>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="form-actions" id="formActions">
+          <button type="button" class="btn btn-secondary" id="prevBtn" style="visibility: hidden;">← Back</button>
+          <button type="button" class="btn btn-primary" id="nextBtn">Continue →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 9;
+    const form = document.getElementById('questionnaireForm');
+    const progressFill = document.getElementById('progressFill');
+    const stepIndicator = document.getElementById('stepIndicator');
+    const percentComplete = document.getElementById('percentComplete');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const formActions = document.getElementById('formActions');
+    const progressContainer = document.getElementById('progressContainer');
+
+    updateProgress();
+    setupEventListeners();
+
+    function setupEventListeners() {
+      prevBtn.addEventListener('click', goToPrevStep);
+      nextBtn.addEventListener('click', goToNextStep);
+      document.getElementById('countrySelect').addEventListener('change', function() {
+        document.getElementById('stateSelectContainer').classList.toggle('visible', this.value === 'US');
+      });
+      setupRangeSlider('cryptoIncomeRange', 'cryptoIncomeValue', '%');
+      setupRangeSlider('cryptoNetWorthRange', 'cryptoNetWorthValue', '%');
+      setupRangeSlider('inflationRange', 'inflationValue', '');
+      setupRangeSlider('usefulnessRange', 'usefulnessValue', '');
+      setupRangeSlider('bankSatRange', 'bankSatValue', '');
+      ['q4_e', 'q5_e', 'q8_d', 'q23_f', 'q24_e', 'q28_g', 'q29_g', 'q30_f'].forEach(id => {
+        setupOtherOption(id, id.replace('_e', '_other_container').replace('_d', '_other_container').replace('_f', '_other_container').replace('_g', '_other_container'));
+      });
+      document.getElementById('q6_f').addEventListener('change', function() {
+        document.getElementById('q6_other_container').classList.toggle('visible', this.checked);
+      });
+    }
+
+    function setupRangeSlider(inputId, valueId, suffix) {
+      const input = document.getElementById(inputId);
+      const valueDisplay = document.getElementById(valueId);
+      if (input && valueDisplay) {
+        input.addEventListener('input', function() { valueDisplay.textContent = this.value + suffix; });
+      }
+    }
+
+    function setupOtherOption(checkboxId, containerId) {
+      const checkbox = document.getElementById(checkboxId);
+      const container = document.getElementById(containerId);
+      if (checkbox && container) {
+        checkbox.addEventListener('change', function() { container.classList.toggle('visible', this.checked); });
+      }
+    }
+
+    function updateProgress() {
+      const progress = ((currentStep - 1) / totalSteps) * 100;
+      progressFill.style.width = progress + '%';
+      stepIndicator.textContent = `Step ${currentStep} of ${totalSteps}`;
+      percentComplete.textContent = Math.round(progress) + '% complete';
+      prevBtn.style.visibility = currentStep > 1 ? 'visible' : 'hidden';
+      nextBtn.textContent = currentStep === totalSteps ? 'Submit' : 'Continue →';
+    }
+
+    function showStep(step) {
+      document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+      const targetStep = document.querySelector(`.form-step[data-step="${step}"]`);
+      if (targetStep) targetStep.classList.add('active');
+      if (step === 'disqualified' || step === 'complete') {
+        formActions.style.display = 'none';
+        progressContainer.style.display = 'none';
+      }
+    }
+
+    function checkQualification() {
+      const wantSpend = document.querySelector('input[name="q3_want_spend"]:checked');
+      if (wantSpend && wantSpend.value === 'no') return false;
+      const plans = document.querySelector('input[name="q6_plans"]:checked');
+      if (plans && !['discretionary', 'household'].includes(plans.value)) return false;
+      return true;
+    }
+
+    function goToNextStep() {
+      const currentStepEl = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+      const requiredInputs = currentStepEl.querySelectorAll('[required]');
+      let isValid = true;
+      requiredInputs.forEach(input => {
+        if (input.type === 'radio') {
+          const checked = currentStepEl.querySelector(`input[name="${input.name}"]:checked`);
+          if (!checked) isValid = false;
+        } else if (!input.value) isValid = false;
+      });
+      if (!isValid) { alert('Please answer all required questions before continuing.'); return; }
+      if (currentStep === 2 && !checkQualification()) { showStep('disqualified'); return; }
+      if (currentStep < totalSteps) {
+        currentStep++;
+        showStep(currentStep);
+        updateProgress();
+        window.scrollTo(0, 0);
+      } else { submitForm(); }
+    }
+
+    function goToPrevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+        updateProgress();
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function submitForm() {
+      const formData = new FormData(form);
+      const data = {};
+      formData.forEach((value, key) => {
+        if (data[key]) {
+          if (Array.isArray(data[key])) data[key].push(value);
+          else data[key] = [data[key], value];
+        } else data[key] = value;
+      });
+      console.log('Form submitted:', data);
+      // TODO: Send to backend (Google Sheets, Formspree, etc.)
+      showStep('complete');
+    }
+  </script>
+</body>
+</html>
