@@ -939,7 +939,7 @@
         } else if (!input.value) isValid = false;
       });
       if (!isValid) { alert('Please answer all required questions before continuing.'); return; }
-      if (currentStep === 2 && !checkQualification()) { showStep('disqualified'); return; }
+      if (currentStep === 2 && !checkQualification()) { submitForm(true); showStep('disqualified'); return; }
       if (currentStep < totalSteps) {
         currentStep++;
         showStep(currentStep);
@@ -957,18 +957,81 @@
       }
     }
 
-    function submitForm() {
-      const formData = new FormData(form);
-      const data = {};
-      formData.forEach((value, key) => {
-        if (data[key]) {
-          if (Array.isArray(data[key])) data[key].push(value);
-          else data[key] = [data[key], value];
-        } else data[key] = value;
+    function getCheckedValues(name) {
+      return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(cb => cb.value).join(', ');
+    }
+
+    function getRadioValue(name) {
+      var el = document.querySelector('input[name="' + name + '"]:checked');
+      return el ? el.value : '';
+    }
+
+    function getInputValue(name) {
+      var el = document.querySelector('[name="' + name + '"]');
+      return el ? el.value : '';
+    }
+
+    function submitForm(disqualified) {
+      const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2dk13qLW6T0M9sYEBCVBPK6RJ8T3Lm0E2pOxMCxuHQpp0V_jkkxtFMn9txYhZZSMU0w/exec';
+
+      const data = {
+        q1_own_crypto: getRadioValue('q1_own_crypto'),
+        q2_used_crypto: getRadioValue('q2_used_crypto'),
+        q3_want_spend: getRadioValue('q3_want_spend'),
+        q4_barriers: getCheckedValues('q4_barriers'),
+        q4_other_text: getInputValue('q4_other_text'),
+        q5_acquisition: getCheckedValues('q5_acquisition'),
+        q5_other_text: getInputValue('q5_other_text'),
+        q6_plans: getCheckedValues('q6_plans'),
+        q6_other_text: getInputValue('q6_other_text'),
+        q7_daily_payment: getCheckedValues('q7_daily_payment'),
+        q8_monthly_payment: getCheckedValues('q8_monthly_payment'),
+        q8_other_text: getInputValue('q8_other_text'),
+        q9_mobile_payment: getRadioValue('q9_mobile_payment'),
+        q10_daily_purchases: getInputValue('q10_daily_purchases'),
+        q11_country: getInputValue('q11_country'),
+        q11_state: getInputValue('q11_state'),
+        q12_profession: getInputValue('q12_profession'),
+        q13_income: getRadioValue('q13_income'),
+        q14_crypto_income: getInputValue('q14_crypto_income'),
+        q15_net_worth: getRadioValue('q15_net_worth'),
+        q16_crypto_net_worth: getInputValue('q16_crypto_net_worth'),
+        q17_monthly_budget: getRadioValue('q17_monthly_budget'),
+        q18_inflation_concern: getInputValue('q18_inflation_concern'),
+        q19_cap_gains: getRadioValue('q19_cap_gains'),
+        q20_crypto_usefulness: getInputValue('q20_crypto_usefulness'),
+        q21_num_banks: getInputValue('q21_num_banks'),
+        q22_bank_satisfaction: getInputValue('q22_bank_satisfaction'),
+        q23_bank_issue: getRadioValue('q23_bank_issue'),
+        q23_other_text: getInputValue('q23_other_text'),
+        q24_bank_like: getRadioValue('q24_bank_like'),
+        q24_other_text: getInputValue('q24_other_text'),
+        q25_self_custody: getRadioValue('q25_self_custody'),
+        q26_custody_importance: getRadioValue('q26_custody_importance'),
+        q27_product_interest: getRadioValue('q27_product_interest'),
+        q28_objections: getCheckedValues('q28_objections'),
+        q28_other_text: getInputValue('q28_other_text'),
+        q29_interests: getCheckedValues('q29_interests'),
+        q29_other_text: getInputValue('q29_other_text'),
+        q30_other_cards: getCheckedValues('q30_other_cards'),
+        q30_other_text: getInputValue('q30_other_text'),
+        q31_rewards: getRadioValue('q31_rewards'),
+        q32_contact_method: getInputValue('q32_contact_method'),
+        q32_contact_info: getInputValue('q32_contact_info'),
+        q33_comments: getInputValue('q33_comments'),
+        disqualified: disqualified ? 'yes' : 'no'
+      };
+
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(data)
       });
-      console.log('Form submitted:', data);
-      // TODO: Send to backend (Google Sheets, Formspree, etc.)
-      showStep('complete');
+
+      if (!disqualified) {
+        showStep('complete');
+      }
     }
   </script>
 </body>
