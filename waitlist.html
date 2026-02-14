@@ -370,7 +370,8 @@
       const data = {
         firstName: formData.get('firstName'),
         lastName: formData.get('lastName'),
-        email: formData.get('email')
+        email: formData.get('email'),
+        consent: formData.get('consent') === 'on' ? 'Yes' : 'No'
       };
 
       fetch(APPS_SCRIPT_URL, {
