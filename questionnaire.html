@@ -443,6 +443,10 @@
                 <label class="option-label" for="q3_yes"><span class="option-indicator"></span>Yes</label>
               </div>
               <div class="option-item">
+                <input type="radio" name="q3_want_spend" id="q3_maybe" value="maybe">
+                <label class="option-label" for="q3_maybe"><span class="option-indicator"></span>Maybe</label>
+              </div>
+              <div class="option-item">
                 <input type="radio" name="q3_want_spend" id="q3_no" value="no">
                 <label class="option-label" for="q3_no"><span class="option-indicator"></span>No</label>
               </div>
@@ -475,14 +479,14 @@
             <div class="other-input" id="q5_other_container"><input type="text" class="text-input" name="q5_other_text" placeholder="Please specify..."></div>
           </div>
           <div class="question-group">
-            <label class="question-label"><span class="question-number">6</span>What do you plan on doing with your cryptocurrency?</label>
+            <label class="question-label"><span class="question-number">6</span>What do you plan on doing with your cryptocurrency? (check all that apply)</label>
             <div class="options-list">
-              <div class="option-item"><input type="radio" name="q6_plans" id="q6_a" value="long_term" required><label class="option-label" for="q6_a"><span class="option-indicator"></span>Hold it for a long-term gain (To infinity and beyond…)</label></div>
-              <div class="option-item"><input type="radio" name="q6_plans" id="q6_b" value="short_term"><label class="option-label" for="q6_b"><span class="option-indicator"></span>Hold it for a short term gain</label></div>
-              <div class="option-item"><input type="radio" name="q6_plans" id="q6_c" value="discretionary"><label class="option-label" for="q6_c"><span class="option-indicator"></span>Spend it on a discretionary purchase (e.g. a vacation)</label></div>
-              <div class="option-item"><input type="radio" name="q6_plans" id="q6_d" value="household"><label class="option-label" for="q6_d"><span class="option-indicator"></span>Spend it on household expenses (e.g. groceries or utilities)</label></div>
-              <div class="option-item"><input type="radio" name="q6_plans" id="q6_e" value="dont_know"><label class="option-label" for="q6_e"><span class="option-indicator"></span>I don't know</label></div>
-              <div class="option-item"><input type="radio" name="q6_plans" id="q6_f" value="other"><label class="option-label" for="q6_f"><span class="option-indicator"></span>Other</label></div>
+              <div class="option-item"><input type="checkbox" name="q6_plans" id="q6_a" value="long_term"><label class="option-label" for="q6_a"><span class="option-indicator"></span>Hold it for a long-term gain (To infinity and beyond…)</label></div>
+              <div class="option-item"><input type="checkbox" name="q6_plans" id="q6_b" value="short_term"><label class="option-label" for="q6_b"><span class="option-indicator"></span>Hold it for a short term gain</label></div>
+              <div class="option-item"><input type="checkbox" name="q6_plans" id="q6_c" value="discretionary"><label class="option-label" for="q6_c"><span class="option-indicator"></span>Spend it on a discretionary purchase (e.g. a vacation)</label></div>
+              <div class="option-item"><input type="checkbox" name="q6_plans" id="q6_d" value="household"><label class="option-label" for="q6_d"><span class="option-indicator"></span>Spend it on household expenses (e.g. groceries or utilities)</label></div>
+              <div class="option-item"><input type="checkbox" name="q6_plans" id="q6_e" value="dont_know"><label class="option-label" for="q6_e"><span class="option-indicator"></span>I don't know</label></div>
+              <div class="option-item"><input type="checkbox" name="q6_plans" id="q6_f" value="other"><label class="option-label" for="q6_f"><span class="option-indicator"></span>Other</label></div>
             </div>
             <div class="other-input" id="q6_other_container"><input type="text" class="text-input" name="q6_other_text" placeholder="Please specify..."></div>
           </div>
@@ -887,8 +891,6 @@
     function checkQualification() {
       const wantSpend = document.querySelector('input[name="q3_want_spend"]:checked');
       if (wantSpend && wantSpend.value === 'no') return false;
-      const plans = document.querySelector('input[name="q6_plans"]:checked');
-      if (plans && !['discretionary', 'household'].includes(plans.value)) return false;
       return true;
     }
 
