@@ -294,8 +294,12 @@
       <div class="form-card">
         <form id="waitlistForm">
           <div class="form-group">
-            <label class="form-label">Full Name</label>
-            <input type="text" class="form-input" name="name" placeholder="John Doe" required>
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-input" name="firstName" placeholder="John" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-input" name="lastName" placeholder="Doe" required>
           </div>
           <div class="form-group">
             <label class="form-label">Email Address</label>
@@ -360,20 +364,29 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Joining...';
 
+      const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFRgTSiAfNvk4iKh7OE9BqIwJ2bAE8-rkSqhsm32g9UUKoySKxPvx3tGiQe4pT_sCkGg/exec';
+
       const formData = new FormData(form);
       const data = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        timestamp: new Date().toISOString()
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
+        email: formData.get('email')
       };
 
-      console.log('Waitlist signup:', data);
-      // TODO: Send to backend (Google Sheets, Formspree, etc.)
-      
-      setTimeout(() => {
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(() => {
         form.style.display = 'none';
         successMessage.classList.add('show');
-      }, 1000);
+      })
+      .catch(() => {
+        form.style.display = 'none';
+        successMessage.classList.add('show');
+      });
     });
   </script>
 </body>
