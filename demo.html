@@ -102,11 +102,14 @@
       max-width: 600px;
       margin: 0 auto;
     }
-    .demo-content {
+    .demo-info-row {
       display: grid;
-      grid-template-columns: 1fr 350px;
+      grid-template-columns: 1fr 1fr;
       gap: 2rem;
-      align-items: start;
+      margin-bottom: 2rem;
+    }
+    .demo-content {
+      display: block;
     }
     .demo-frame-container {
       background: var(--white);
@@ -202,11 +205,6 @@
       border-color: var(--primary);
       color: var(--primary);
     }
-    .demo-sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
     .info-card {
       background: var(--white);
       border-radius: 16px;
@@ -251,28 +249,10 @@
       color: var(--accent);
       flex-shrink: 0;
     }
-    .cta-card {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: white;
-    }
-    .cta-card h3 {
-      color: white;
-    }
-    .cta-card h3 svg { color: white; }
-    .cta-card p { color: rgba(255,255,255,0.9); }
-    .cta-card .btn {
-      background: white;
-      color: var(--primary);
-      width: 100%;
-    }
-    .cta-card .btn:hover {
-      background: var(--gray-100);
-      transform: translateY(-1px);
-    }
     /* Responsive iframe for when Streamlit is deployed */
     .demo-iframe {
       width: 100%;
-      height: 700px;
+      height: 800px;
       border: none;
       display: none;
     }
@@ -283,11 +263,8 @@
       display: none;
     }
     @media (max-width: 900px) {
-      .demo-content {
+      .demo-info-row {
         grid-template-columns: 1fr;
-      }
-      .demo-sidebar {
-        order: -1;
       }
     }
     @media (max-width: 640px) {
@@ -318,43 +295,8 @@
     </div>
 
     <div class="demo-content">
-      <div class="demo-frame-container">
-        <div class="demo-frame-header">
-          <span class="demo-frame-dot red"></span>
-          <span class="demo-frame-dot yellow"></span>
-          <span class="demo-frame-dot green"></span>
-          <span class="demo-frame-title">Tax Optimizer v2.3</span>
-        </div>
-        
-        <!-- Placeholder when Streamlit isn't deployed yet -->
-        <div class="demo-placeholder" id="demoPlaceholder">
-          <div class="demo-placeholder-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          </div>
-          <h3>Interactive Demo Coming Soon</h3>
-          <p>We're deploying our Tax Optimizer to Streamlit Cloud. In the meantime, check out what it can do:</p>
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-            <a href="#" class="btn btn-primary" id="launchDemo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              Launch Demo
-            </a>
-            <a href="waitlist.html" class="btn btn-secondary">Join Waitlist</a>
-          </div>
-        </div>
-
-        <!-- Iframe for when Streamlit is deployed -->
-        <!-- Update the src attribute with your Streamlit Cloud URL -->
-        <iframe 
-          class="demo-iframe" 
-          id="demoIframe"
-          src=""
-          title="Tax Optimizer Demo"
-        ></iframe>
-      </div>
-
-      <div class="demo-sidebar">
+      <!-- Info cards side by side above the iframe -->
+      <div class="demo-info-row">
         <div class="info-card">
           <h3>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -417,17 +359,42 @@
             </li>
           </ul>
         </div>
+      </div>
 
-        <div class="info-card cta-card">
-          <h3>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
-            Get Early Access
-          </h3>
-          <p>Be the first to know when we launch. Join our waitlist today.</p>
-          <a href="waitlist.html" class="btn">Join the Waitlist →</a>
+      <!-- Full-width iframe -->
+      <div class="demo-frame-container">
+        <div class="demo-frame-header">
+          <span class="demo-frame-dot red"></span>
+          <span class="demo-frame-dot yellow"></span>
+          <span class="demo-frame-dot green"></span>
+          <span class="demo-frame-title">Tax Optimizer v2.3</span>
         </div>
+
+        <!-- Placeholder when Streamlit isn't deployed yet -->
+        <div class="demo-placeholder" id="demoPlaceholder">
+          <div class="demo-placeholder-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <h3>Interactive Demo Coming Soon</h3>
+          <p>We're deploying our Tax Optimizer to Streamlit Cloud. In the meantime, check out what it can do:</p>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+            <a href="#" class="btn btn-primary" id="launchDemo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Launch Demo
+            </a>
+            <a href="waitlist.html" class="btn btn-secondary">Join Waitlist</a>
+          </div>
+        </div>
+
+        <!-- Iframe for when Streamlit is deployed -->
+        <iframe
+          class="demo-iframe"
+          id="demoIframe"
+          src=""
+          title="Tax Optimizer Demo"
+        ></iframe>
       </div>
     </div>
   </div>
