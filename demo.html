@@ -106,7 +106,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
-      margin-bottom: 2rem;
+      margin-top: 2rem;
     }
     .demo-content {
       display: block;
@@ -295,7 +295,43 @@
     </div>
 
     <div class="demo-content">
-      <!-- Info cards side by side above the iframe -->
+      <!-- Full-width iframe -->
+      <div class="demo-frame-container">
+        <div class="demo-frame-header">
+          <span class="demo-frame-dot red"></span>
+          <span class="demo-frame-dot yellow"></span>
+          <span class="demo-frame-dot green"></span>
+          <span class="demo-frame-title">Tax Optimizer v2.3</span>
+        </div>
+
+        <!-- Placeholder when Streamlit isn't deployed yet -->
+        <div class="demo-placeholder" id="demoPlaceholder">
+          <div class="demo-placeholder-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <h3>Interactive Demo Coming Soon</h3>
+          <p>We're deploying our Tax Optimizer to Streamlit Cloud. In the meantime, check out what it can do:</p>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+            <a href="#" class="btn btn-primary" id="launchDemo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Launch Demo
+            </a>
+            <a href="waitlist.html" class="btn btn-secondary">Join Waitlist</a>
+          </div>
+        </div>
+
+        <!-- Iframe for when Streamlit is deployed -->
+        <iframe
+          class="demo-iframe"
+          id="demoIframe"
+          src=""
+          title="Tax Optimizer Demo"
+        ></iframe>
+      </div>
+
+      <!-- Info cards side by side below the iframe -->
       <div class="demo-info-row">
         <div class="info-card">
           <h3>
@@ -359,42 +395,6 @@
             </li>
           </ul>
         </div>
-      </div>
-
-      <!-- Full-width iframe -->
-      <div class="demo-frame-container">
-        <div class="demo-frame-header">
-          <span class="demo-frame-dot red"></span>
-          <span class="demo-frame-dot yellow"></span>
-          <span class="demo-frame-dot green"></span>
-          <span class="demo-frame-title">Tax Optimizer v2.3</span>
-        </div>
-
-        <!-- Placeholder when Streamlit isn't deployed yet -->
-        <div class="demo-placeholder" id="demoPlaceholder">
-          <div class="demo-placeholder-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          </div>
-          <h3>Interactive Demo Coming Soon</h3>
-          <p>We're deploying our Tax Optimizer to Streamlit Cloud. In the meantime, check out what it can do:</p>
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-            <a href="#" class="btn btn-primary" id="launchDemo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              Launch Demo
-            </a>
-            <a href="waitlist.html" class="btn btn-secondary">Join Waitlist</a>
-          </div>
-        </div>
-
-        <!-- Iframe for when Streamlit is deployed -->
-        <iframe
-          class="demo-iframe"
-          id="demoIframe"
-          src=""
-          title="Tax Optimizer Demo"
-        ></iframe>
       </div>
     </div>
   </div>
