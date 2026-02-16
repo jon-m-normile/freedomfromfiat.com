@@ -48,7 +48,7 @@ git push origin main
 ### Demo (demo.html)
 - Placeholder for Streamlit Tax Optimizer
 - Information cards explaining:
-  - How the tax optimization algorithm works
+  - How the Tax Optimization Algorithm works
   - Demo features
 - CTA to join waitlist
 - **TODO**: Deploy Streamlit app and update `STREAMLIT_URL` in the script
