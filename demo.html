@@ -262,6 +262,25 @@
       .demo-header h1 { font-size: 1.75rem; }
       .nav-links { display: none; }
     }
+
+    .csv-tooltip .csv-tooltip-text {
+      visibility: hidden;
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gray-900);
+      color: var(--white);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      z-index: 10;
+    }
+
+    .csv-tooltip:hover .csv-tooltip-text {
+      visibility: visible;
+    }
   </style>
 </head>
 <body>
@@ -332,10 +351,10 @@
             Getting Started
           </h3>
           <ol>
-            <li>Click <strong>Create Sample Data</strong> in the sidebar to load a demo portfolio with live prices, or <span title="CSV format: lot_id,timestamp,type,Currency,quantity,cost_basis" style="cursor: help; border-bottom: 1px dotted currentColor;">upload your own CSV</span>.</li>
+            <li>Click <strong>Create Sample Data</strong> in the sidebar to load a demo portfolio with live prices, or <span class="csv-tooltip" style="cursor: help; border-bottom: 1px dotted currentColor; position: relative;">upload your own CSV<span class="csv-tooltip-text">Required Format:<br>lot_id, timestamp, type, Currency, quantity, cost_basis</span></span>.</li>
             <li>Adjust your tax parameters (carry-forward losses, tax rates, OID limit) in the sidebar.</li>
             <li>Go to the <strong>Purchase</strong> tab, enter a dollar amount, and click <strong>Buy</strong> to simulate a debit card purchase.</li>
-            <li>The system automatically selects the optimal lots to sell using the Tax Optimization Algorithm.</li>
+            <li>The system automatically selects the lots to sell to fund your debit card purchase using the Tax Optimization Algorithm.</li>
           </ol>
         </div>
 
@@ -347,7 +366,7 @@
             Reading the Results
           </h3>
           <ol>
-            <li>The <strong>Tax Status</strong> panel (top right) shows your running capital gains, carry-forward losses, and ordinary income deduction.</li>
+            <li>The <strong>Tax Status</strong> panel (top right) shows your running capital gains, carry-forward losses, and ordinary income credit.</li>
             <li>The <strong>Portfolio</strong> tab shows your remaining lots with current values and unrealized P&L.</li>
             <li>The <strong>History</strong> tab logs every purchase and the individual lot sales that filled it.</li>
             <li>The <strong>Tax Detail</strong> tab breaks down how gains and losses are netted using IRS rules.</li>
