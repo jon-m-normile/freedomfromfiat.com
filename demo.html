@@ -230,25 +230,16 @@
       color: var(--gray-500);
       margin-bottom: 1rem;
     }
-    .info-card ul {
-      list-style: none;
+    .info-card ol {
       font-size: 0.875rem;
       color: var(--gray-700);
+      padding-left: 1.25rem;
     }
     .info-card li {
       padding: 0.5rem 0;
       border-bottom: 1px solid var(--gray-100);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
     }
     .info-card li:last-child { border-bottom: none; }
-    .info-card li svg {
-      width: 16px;
-      height: 16px;
-      color: var(--accent);
-      flex-shrink: 0;
-    }
     /* Responsive iframe for when Streamlit is deployed */
     .demo-iframe {
       width: 100%;
@@ -331,38 +322,21 @@
         ></iframe>
       </div>
 
-      <!-- Info cards side by side below the iframe -->
+      <!-- Instructions below the iframe -->
       <div class="demo-info-row">
         <div class="info-card">
           <h3>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
-            How It Works
+            Getting Started
           </h3>
-          <p>The Tax Waterfall processes each purchase through 14 decision logic steps:</p>
-          <ul>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Apply carry-forward losses to gains
-            </li>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Harvest up to $3,000 OID deduction
-            </li>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Balance gains vs losses for tax neutrality
-            </li>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Accumulate losses for future years
-            </li>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Prioritize long-term gains (lower rate)
-            </li>
-          </ul>
+          <ol>
+            <li>Click <strong>Create Sample Data</strong> in the sidebar to load a demo portfolio with live prices, or upload your own CSV.</li>
+            <li>Adjust your tax parameters (carry-forward losses, tax rates, OID limit) in the sidebar.</li>
+            <li>Go to the <strong>Purchase</strong> tab, enter a dollar amount, and click <strong>Buy</strong> to simulate a debit card purchase.</li>
+            <li>The system automatically selects the optimal lots to sell using the 14-step Tax Waterfall algorithm.</li>
+          </ol>
         </div>
 
         <div class="info-card">
@@ -370,30 +344,14 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
             </svg>
-            Demo Features
+            Reading the Results
           </h3>
-          <ul>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Upload your own portfolio CSV
-            </li>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Real-time prices via Kraken API
-            </li>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Simulate debit card purchases
-            </li>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              View lot selection breakdown
-            </li>
-            <li>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              See tax savings in real-time
-            </li>
-          </ul>
+          <ol>
+            <li>The <strong>Tax Status</strong> panel (top right) shows your running capital gains, carry-forward losses, and ordinary income deduction.</li>
+            <li>The <strong>Portfolio</strong> tab shows your remaining lots with current values and unrealized P&L.</li>
+            <li>The <strong>History</strong> tab logs every purchase and the individual lot sales that filled it.</li>
+            <li>The <strong>Tax Detail</strong> tab breaks down how gains and losses are netted using IRS rules.</li>
+          </ol>
         </div>
       </div>
     </div>
