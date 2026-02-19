@@ -116,6 +116,43 @@
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .iframe-loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      z-index: 10;
+      transition: opacity 0.4s ease;
+    }
+
+    .iframe-loading-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .iframe-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--gray-300);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .iframe-loading-overlay p {
+      color: var(--gray-500);
+      font-size: 0.9375rem;
     }
     .demo-frame-header {
       background: var(--dark);
@@ -340,6 +377,10 @@
         </div>
 
         <!-- Iframe for when Streamlit is deployed -->
+        <div class="iframe-loading-overlay" id="iframeOverlay">
+          <div class="iframe-spinner"></div>
+          <p>Loading Tax Optimizer…</p>
+        </div>
         <iframe
           class="demo-iframe"
           id="demoIframe"
@@ -392,10 +433,15 @@
     const launchBtn = document.getElementById('launchDemo');
 
     // If Streamlit URL is configured, show the iframe
+    const overlay = document.getElementById('iframeOverlay');
     if (STREAMLIT_URL) {
       placeholder.classList.add('hidden');
       iframe.classList.add('active');
       iframe.src = STREAMLIT_URL;
+      iframe.addEventListener('load', function() {
+        // Extra delay to ensure Streamlit has finished rendering before revealing
+        setTimeout(() => overlay.classList.add('hidden'), 1500);
+      });
     }
 
     // Launch button click handler
