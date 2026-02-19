@@ -751,7 +751,7 @@
       <div class="card-bottom">
         <div>
           <div class="card-holder-label">Card Holder</div>
-          <div class="card-holder">ADAM SMITH</div>
+          <div class="card-holder" id="cardHolder"></div>
         </div>
         <span class="card-brand-text">VISA</span>
       </div>
@@ -916,5 +916,9 @@
       </div>
     </div>
   </footer>
+  <script>
+    const cardNames = ['ADAM SMITH', 'JOHN KEYNES', 'DAVE RICARDO', 'KARL MARX', 'JOE SCHUMPETER', 'AL MARSHALL'];
+    document.getElementById('cardHolder').textContent = cardNames[Math.floor(Math.random() * cardNames.length)];
+  </script>
 </body>
 </html>
