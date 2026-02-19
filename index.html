@@ -939,12 +939,23 @@
       'TAO ZHU GONG':   'https://en.wikipedia.org/wiki/Tao_Zhu_Gong',
       'ARISTOTLE':      'https://en.wikipedia.org/wiki/Aristotle',
     };
+    const savedName = localStorage.getItem('cardholderName');
+    if (savedName && !cardNames[savedName]) {
+      cardNames[savedName] = null;  // no Wikipedia link for the visitor's own name
+    }
     const names = Object.keys(cardNames);
-    let currentIndex = Math.floor(Math.random() * names.length);
+
+    // Start on the visitor's own name if they signed up, otherwise random
+    let currentIndex = savedName
+      ? names.indexOf(savedName)
+      : Math.floor(Math.random() * names.length);
 
     function setCardHolder(index) {
       const name = names[index];
-      document.getElementById('cardHolder').innerHTML = `<a href="${cardNames[name]}" target="_blank" rel="noopener noreferrer">${name}</a>`;
+      const url = cardNames[name];
+      document.getElementById('cardHolder').innerHTML = url
+        ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${name}</a>`
+        : name;
     }
 
     setCardHolder(currentIndex);

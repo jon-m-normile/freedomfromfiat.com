@@ -388,6 +388,7 @@
         body: JSON.stringify(data)
       })
       .then(() => {
+        localStorage.setItem('cardholderName', `${data.firstName} ${data.lastName}`.toUpperCase());
         form.style.display = 'none';
         successMessage.classList.add('show');
       })
