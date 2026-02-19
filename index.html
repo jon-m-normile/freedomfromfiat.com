@@ -179,7 +179,22 @@
       letter-spacing: -0.02em;
     }
 
-    .hero h1 span {
+    .hero-intro {
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--gray-500);
+      margin-bottom: 1.75rem;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-red {
+      background: linear-gradient(135deg, #e53935, #f97316);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-blue {
       background: linear-gradient(135deg, var(--primary), var(--accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -682,6 +697,7 @@
 
   <!-- Hero Section -->
   <section class="hero">
+    <p class="hero-intro">Introducing the Crypto Freedom Debit Card</p>
     <div class="debit-card">
       <!-- Crypto-themed background art -->
       <svg class="card-bg-art" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg">
@@ -743,7 +759,7 @@
       <span class="hero-badge-dot"></span>
       Launching 2026
     </div>
-    <h1>Spend your crypto<br><span>Minimize your taxes</span></h1>
+    <h1><span class="hero-red">Spend Your Crypto,</span> <span class="hero-blue">Minimize Your Taxes.</span></h1>
     <p class="hero-subtitle">
       The Crypto Freedom Debit Card lets you spend your cryptocurrency as easily as cash
     </p>
