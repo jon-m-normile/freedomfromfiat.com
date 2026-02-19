@@ -649,6 +649,15 @@
       color: rgba(255, 255, 255, 0.8);
     }
 
+    .card-holder a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .card-holder a:hover {
+      text-decoration: underline;
+    }
+
     .card-holder-label {
       font-size: 0.6rem;
       letter-spacing: 0.1em;
@@ -917,8 +926,21 @@
     </div>
   </footer>
   <script>
-    const cardNames = ['ADAM SMITH', 'JOHN KEYNES', 'DAVE RICARDO', 'KARL MARX', 'JOE SCHUMPETER', 'AL MARSHALL', 'NICK ORESME', 'JEAN BURIDAN', 'TAO ZHU GONG', 'ARISTOTLE'];
-    document.getElementById('cardHolder').textContent = cardNames[Math.floor(Math.random() * cardNames.length)];
+    const cardNames = {
+      'ADAM SMITH':     'https://en.wikipedia.org/wiki/Adam_Smith',
+      'JOHN KEYNES':    'https://en.wikipedia.org/wiki/John_Maynard_Keynes',
+      'DAVE RICARDO':   'https://en.wikipedia.org/wiki/David_Ricardo',
+      'KARL MARX':      'https://en.wikipedia.org/wiki/Karl_Marx',
+      'JOE SCHUMPETER': 'https://en.wikipedia.org/wiki/Joseph_Schumpeter',
+      'AL MARSHALL':    'https://en.wikipedia.org/wiki/Alfred_Marshall',
+      'NICK ORESME':    'https://en.wikipedia.org/wiki/Nicole_Oresme',
+      'JEAN BURIDAN':   'https://en.wikipedia.org/wiki/Jean_Buridan',
+      'TAO ZHU GONG':   'https://en.wikipedia.org/wiki/Tao_Zhu_Gong',
+      'ARISTOTLE':      'https://en.wikipedia.org/wiki/Aristotle',
+    };
+    const names = Object.keys(cardNames);
+    const chosen = names[Math.floor(Math.random() * names.length)];
+    document.getElementById('cardHolder').innerHTML = `<a href="${cardNames[chosen]}" target="_blank" rel="noopener noreferrer">${chosen}</a>`;
   </script>
 </body>
 </html>
