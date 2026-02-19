@@ -554,6 +554,7 @@
     .debit-card {
       width: 480px;
       height: 300px;
+      cursor: pointer;
       border-radius: 20px;
       background: linear-gradient(135deg, #0a0a1a 0%, #121230 30%, #0f3460 70%, #1a1a2e 100%);
       padding: 2.25rem;
@@ -939,8 +940,23 @@
       'ARISTOTLE':      'https://en.wikipedia.org/wiki/Aristotle',
     };
     const names = Object.keys(cardNames);
-    const chosen = names[Math.floor(Math.random() * names.length)];
-    document.getElementById('cardHolder').innerHTML = `<a href="${cardNames[chosen]}" target="_blank" rel="noopener noreferrer">${chosen}</a>`;
+    let currentIndex = Math.floor(Math.random() * names.length);
+
+    function setCardHolder(index) {
+      const name = names[index];
+      document.getElementById('cardHolder').innerHTML = `<a href="${cardNames[name]}" target="_blank" rel="noopener noreferrer">${name}</a>`;
+    }
+
+    setCardHolder(currentIndex);
+
+    document.querySelector('.debit-card').addEventListener('click', function(e) {
+      // Don't re-roll if the user clicked the Wikipedia link itself
+      if (e.target.tagName === 'A') return;
+      let next;
+      do { next = Math.floor(Math.random() * names.length); } while (next === currentIndex);
+      currentIndex = next;
+      setCardHolder(currentIndex);
+    });
   </script>
 </body>
 </html>
