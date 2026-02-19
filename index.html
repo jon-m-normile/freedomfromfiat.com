@@ -659,6 +659,54 @@
       text-decoration: underline;
     }
 
+    .cardholder-tooltip-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .cardholder-tooltip-wrap .ch-tooltip {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 0;
+      width: 230px;
+      background: #fff;
+      color: #374151;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 400;
+      line-height: 1.55;
+      letter-spacing: 0;
+      text-transform: none;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+      transition: opacity 0.2s;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .cardholder-tooltip-wrap:hover .ch-tooltip {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .ch-tooltip-remove {
+      display: inline-block;
+      margin-top: 0.5rem;
+      color: #e53935;
+      font-weight: 600;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.75rem;
+      font-family: inherit;
+      text-decoration: underline;
+    }
+
     .card-holder-label {
       font-size: 0.6rem;
       letter-spacing: 0.1em;
@@ -953,16 +1001,41 @@
     function setCardHolder(index) {
       const name = names[index];
       const url = cardNames[name];
-      document.getElementById('cardHolder').innerHTML = url
-        ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${name}</a>`
-        : name;
+      const el = document.getElementById('cardHolder');
+
+      if (!url && name === savedName) {
+        // Visitor's own name — show with tooltip
+        el.innerHTML = `
+          <span class="cardholder-tooltip-wrap">
+            ${name}
+            <span class="ch-tooltip">
+              You signed up for our waitlist!<br><br>
+              <strong>Only you can see this</strong> — your name is stored
+              locally in your browser and never shared.<br><br>
+              <button class="ch-tooltip-remove" id="removeCardName">Remove my name</button>
+            </span>
+          </span>`;
+        document.getElementById('removeCardName').addEventListener('click', function(e) {
+          e.stopPropagation();
+          localStorage.removeItem('cardholderName');
+          delete cardNames[savedName];
+          names.splice(names.indexOf(savedName), 1);
+          currentIndex = Math.floor(Math.random() * names.length);
+          setCardHolder(currentIndex);
+        });
+      } else {
+        el.innerHTML = url
+          ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${name}</a>`
+          : name;
+      }
     }
 
     setCardHolder(currentIndex);
 
     document.querySelector('.debit-card').addEventListener('click', function(e) {
-      // Don't re-roll if the user clicked the Wikipedia link itself
+      // Don't re-roll if the user clicked the Wikipedia link or tooltip
       if (e.target.tagName === 'A') return;
+      if (e.target.closest('.ch-tooltip')) return;
       let next;
       do { next = Math.floor(Math.random() * names.length); } while (next === currentIndex);
       currentIndex = next;
