@@ -237,7 +237,7 @@
     const pingPromise = (async function poll() {
       while (true) {
         try {
-          const r = await fetch(healthUrl, { cache: 'no-store' });
+          const r = await fetch(`${healthUrl}?_=${Date.now()}`);
           if (r.ok) {
             renderReady = true;
             const elapsed = ((Date.now() - start) / 1000).toFixed(1);
