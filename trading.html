@@ -224,33 +224,36 @@
   </main>
 
   <script>
-    const statusEl = document.getElementById('status');
-    const form     = document.querySelector('form');
-    const btn      = document.querySelector('button[type="submit"]');
-    const appUrl   = 'https://app.freedomfromfiat.com/login';
-    const start    = Date.now();
+    const statusEl  = document.getElementById('status');
+    const form      = document.querySelector('form');
+    const btn       = document.querySelector('button[type="submit"]');
+    const healthUrl = 'https://app.freedomfromfiat.com/health';
+    const start     = Date.now();
     let renderReady = false;
 
-    // Ping Render immediately so it starts waking up while the user types.
-    // The fetch() resolves only once Render actually responds, so we can
-    // use it as a reliable "server is up" signal.
-    const pingPromise = fetch(appUrl, { method: 'GET', mode: 'no-cors', cache: 'no-store' })
-      .then(() => {
-        renderReady = true;
-        const elapsed = ((Date.now() - start) / 1000).toFixed(1);
-        statusEl.textContent = `Dashboard ready (${elapsed}s)`;
-        statusEl.classList.add('ready');
-      })
-      .catch(() => {
-        // Network error — let the form submit anyway and show the browser error
-        renderReady = true;
-        statusEl.textContent = '';
-      });
+    // Poll /health every 2 s until the Flask app returns a real 200.
+    // Render's cold-start infrastructure returns an immediate non-200 response
+    // while spinning up, so we can't trust a single ping.
+    const pingPromise = (async function poll() {
+      while (true) {
+        try {
+          const r = await fetch(healthUrl, { cache: 'no-store' });
+          if (r.ok) {
+            renderReady = true;
+            const elapsed = ((Date.now() - start) / 1000).toFixed(1);
+            statusEl.textContent = `Dashboard ready (${elapsed}s)`;
+            statusEl.classList.add('ready');
+            return;
+          }
+        } catch (_) {}
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    })();
 
     // Intercept submit: if Render isn't up yet, hold the form here on the
-    // static page (with a clear message) rather than navigating to a blank tab.
+    // static page with a clear message rather than navigating to a blank tab.
     form.addEventListener('submit', function (e) {
-      if (renderReady) return; // already up — let the browser submit normally
+      if (renderReady) return; // already up — let browser submit normally
 
       e.preventDefault();
       btn.disabled = true;
