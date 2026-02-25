@@ -224,23 +224,45 @@
   </main>
 
   <script>
-    // Ping the Render app as soon as this page loads so it starts waking up
-    // while the user fills in their credentials.
     const statusEl = document.getElementById('status');
-    const appUrl = 'https://app.freedomfromfiat.com/login';
-    const start = Date.now();
+    const form     = document.querySelector('form');
+    const btn      = document.querySelector('button[type="submit"]');
+    const appUrl   = 'https://app.freedomfromfiat.com/login';
+    const start    = Date.now();
+    let renderReady = false;
 
-    fetch(appUrl, { method: 'GET', mode: 'no-cors', cache: 'no-store' })
+    // Ping Render immediately so it starts waking up while the user types.
+    // The fetch() resolves only once Render actually responds, so we can
+    // use it as a reliable "server is up" signal.
+    const pingPromise = fetch(appUrl, { method: 'GET', mode: 'no-cors', cache: 'no-store' })
       .then(() => {
+        renderReady = true;
         const elapsed = ((Date.now() - start) / 1000).toFixed(1);
         statusEl.textContent = `Dashboard ready (${elapsed}s)`;
         statusEl.classList.add('ready');
       })
       .catch(() => {
-        // no-cors fetch always "succeeds" from the browser's perspective,
-        // so this only fires on network errors
+        // Network error — let the form submit anyway and show the browser error
+        renderReady = true;
         statusEl.textContent = '';
       });
+
+    // Intercept submit: if Render isn't up yet, hold the form here on the
+    // static page (with a clear message) rather than navigating to a blank tab.
+    form.addEventListener('submit', function (e) {
+      if (renderReady) return; // already up — let the browser submit normally
+
+      e.preventDefault();
+      btn.disabled = true;
+      statusEl.textContent = 'Server is waking up, please wait…';
+      statusEl.classList.remove('ready');
+
+      pingPromise.then(() => {
+        statusEl.textContent = 'Ready — signing in…';
+        statusEl.classList.add('ready');
+        form.submit();
+      });
+    });
   </script>
 
 </body>
