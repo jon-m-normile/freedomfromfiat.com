@@ -5,6 +5,10 @@
 - Changes pushed to `main` go live automatically within ~1 minute.
 - Custom domain: `freedomfromfiat.com` (CNAME file in repo root).
 
+## Infrastructure
+See `docs/INFRASTRUCTURE.md` for full details on DNS, hosting, email, 
+and Render deployments. Read this before making any domain or deployment changes.
+
 ## Page Structure
 | File | Purpose |
 |---|---|
