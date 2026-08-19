@@ -110,7 +110,7 @@ All three applications are deployed on [Render](https://render.com) and accessib
 | Crypto Tax Optimizer Plus | [jon-m-normile/Crypto-Tax-Optimizer-Plus](https://github.com/jon-m-normile/Crypto-Tax-Optimizer-Plus) | Render URL (https://crypto-tax-optimizer-plus.onrender.com) | Full-featured Tax Waterfall demo (v2.3.2+) |
 | Crypto Tax Optimizer | [jon-m-normile/Crypto-Tax-Optimizer](https://github.com/jon-m-normile/Crypto-Tax-Optimizer) | Render URL (https://crypto-tax-optimizer.onrender.com) | Original Tax Waterfall demo |
 
-> **3F Trading Dashboard** (`jon-m-normile/3f-trading-dashboard`) is the retired predecessor. It is no longer what serves `app.freedomfromfiat.com` — confirm in the Render dashboard whether that old service still exists/is running before assuming it's fully decommissioned.
+> **3F Trading Dashboard** (`jon-m-normile/3f-trading-dashboard`) is the retired predecessor. It is no longer what serves `app.freedomfromfiat.com` — confirmed 2026-08-19 in the Render dashboard: suspended (not deleted), renamed `zzz-retired-3f-trading-dashboard`. Its Postgres DB (`3f-trading-db`, paid plan) is still live and billed.
 
 > **Note:** Render free-tier services spin down after inactivity. First load after idle may take 30–60 seconds.
 
