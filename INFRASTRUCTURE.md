@@ -60,14 +60,14 @@
 | Type | Name | Value | Proxy | Purpose |
 |------|------|-------|-------|---------|
 | CNAME | `www` | `jon-m-normile.github.io` | Proxied | Main website |
-| CNAME | `app` | `threef-dc-ops.onrender.com` (unverified — see note) | Proxied | Trading dashboard (3FPA — see §4) |
+| CNAME | `app` | `threef-dc-ops.onrender.com` | Proxied | Trading dashboard (3FPA — see §4) |
 
 #### MX Record (Google Workspace)
 | Type | Name | Value | Priority |
 |------|------|-------|----------|
 | MX | `@` | `SMTP.GOOGLE.COM` | 1 |
 
-> **Note on the `app` CNAME (2026-08-19):** this table previously listed `threef-trading-dashboard.onrender.com` — that's stale. The Render service actually serving `app.freedomfromfiat.com` today is named `3f-dc-ops` (GitHub repo `jon-m-normile/3F-Payments-App`, branded 3FPA — see §4), confirmed by curling `app.freedomfromfiat.com/login` and seeing the 3FPA login page. Cloudflare proxies this record (orange cloud), so the literal CNAME target can't be confirmed via public DNS lookup — `threef-dc-ops.onrender.com` above is inferred from Render's naming convention, not read directly from Cloudflare. That service is being renamed to `3F-Payments-App` shortly, which will change its `.onrender.com` subdomain again — **update this CNAME in Cloudflare to match once the rename lands**, or `app.freedomfromfiat.com` will break.
+> **Note on the `app` CNAME (2026-08-19):** this table previously listed `threef-trading-dashboard.onrender.com` — that's stale. The Render service serving `app.freedomfromfiat.com` today is named `3F-Payments-App` (GitHub repo `jon-m-normile/3F-Payments-App`, branded 3FPA — see §4), confirmed by curling `app.freedomfromfiat.com/login` and seeing the 3FPA login page. It was renamed same-day from its prior display name `3f-dc-ops`; per the Render dashboard's Custom Domains panel, its `.onrender.com` subdomain stayed `threef-dc-ops.onrender.com` across the rename — renaming a Render service's display Name does not regenerate its subdomain. Cloudflare proxies this record (orange cloud), so the literal CNAME target still can't be confirmed via public DNS lookup, but the value above is confirmed correct via the Render dashboard directly (not inferred), and no Cloudflare change was needed for this rename.
 
 #### TXT Records
 | Type | Name | Value | Purpose |
@@ -165,9 +165,9 @@ Cloudflare SSL has lapsed or there's a configuration issue.
 4. Check GitHub Pages settings in repo → Settings → Pages — confirm custom domain is set
 
 ### Trading dashboard (app.freedomfromfiat.com) is down
-1. Log into [Render](https://render.com) and check service status for `3f-dc-ops` (renamed to `3F-Payments-App` as of 2026-08-19 — look under whichever name is current)
+1. Log into [Render](https://render.com) and check service status for `3F-Payments-App` (renamed from `3f-dc-ops` on 2026-08-19; subdomain `threef-dc-ops.onrender.com` stayed the same across the rename)
 2. If suspended due to inactivity, restart the service
-3. Verify the `app` CNAME in Cloudflare points to that service's current `.onrender.com` subdomain (changes if the service is renamed — see §2 note)
+3. Verify the `app` CNAME in Cloudflare still points to `threef-dc-ops.onrender.com` (see §2 note — confirmed stable across the 2026-08-19 rename, but would need updating if the service is ever recreated rather than renamed)
 
 ### Email not delivering
 1. Verify MX record in Cloudflare points to `SMTP.GOOGLE.COM` with priority 1
