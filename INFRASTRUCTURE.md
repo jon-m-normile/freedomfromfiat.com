@@ -1,6 +1,6 @@
 # freedomfromfiat.com — Infrastructure Reference
 
-> **Last updated:** April 2026  
+> **Last updated:** 2026-08-19  
 > Keep this document current whenever infrastructure changes are made.
 
 ---
@@ -60,12 +60,14 @@
 | Type | Name | Value | Proxy | Purpose |
 |------|------|-------|-------|---------|
 | CNAME | `www` | `jon-m-normile.github.io` | Proxied | Main website |
-| CNAME | `app` | `threef-trading-dashboard.onrender.com` | Proxied | Trading dashboard |
+| CNAME | `app` | `threef-dc-ops.onrender.com` (unverified — see note) | Proxied | Trading dashboard (3FPA — see §4) |
 
 #### MX Record (Google Workspace)
 | Type | Name | Value | Priority |
 |------|------|-------|----------|
 | MX | `@` | `SMTP.GOOGLE.COM` | 1 |
+
+> **Note on the `app` CNAME (2026-08-19):** this table previously listed `threef-trading-dashboard.onrender.com` — that's stale. The Render service actually serving `app.freedomfromfiat.com` today is named `3f-dc-ops` (GitHub repo `jon-m-normile/3F-Payments-App`, branded 3FPA — see §4), confirmed by curling `app.freedomfromfiat.com/login` and seeing the 3FPA login page. Cloudflare proxies this record (orange cloud), so the literal CNAME target can't be confirmed via public DNS lookup — `threef-dc-ops.onrender.com` above is inferred from Render's naming convention, not read directly from Cloudflare. That service is being renamed to `3F-Payments-App` shortly, which will change its `.onrender.com` subdomain again — **update this CNAME in Cloudflare to match once the rename lands**, or `app.freedomfromfiat.com` will break.
 
 #### TXT Records
 | Type | Name | Value | Purpose |
@@ -104,9 +106,11 @@ All three applications are deployed on [Render](https://render.com) and accessib
 
 | Service | GitHub Repo | URL | Purpose |
 |---------|-------------|-----|---------|
-| 3F Trading Dashboard | [jon-m-normile/3f-trading-dashboard](https://github.com/jon-m-normile/3f-trading-dashboard) | [app.freedomfromfiat.com](https://app.freedomfromfiat.com) | Live trading desk / demo |
+| 3FPA (3F Payments App, formerly 3F_DC_Ops) | [jon-m-normile/3F-Payments-App](https://github.com/jon-m-normile/3F-Payments-App) | [app.freedomfromfiat.com](https://app.freedomfromfiat.com) | Live trading desk — successor to 3F Trading Dashboard, cutover already complete (Trello card 40) as of 2026-08-19 |
 | Crypto Tax Optimizer Plus | [jon-m-normile/Crypto-Tax-Optimizer-Plus](https://github.com/jon-m-normile/Crypto-Tax-Optimizer-Plus) | Render URL (https://crypto-tax-optimizer-plus.onrender.com) | Full-featured Tax Waterfall demo (v2.3.2+) |
 | Crypto Tax Optimizer | [jon-m-normile/Crypto-Tax-Optimizer](https://github.com/jon-m-normile/Crypto-Tax-Optimizer) | Render URL (https://crypto-tax-optimizer.onrender.com) | Original Tax Waterfall demo |
+
+> **3F Trading Dashboard** (`jon-m-normile/3f-trading-dashboard`) is the retired predecessor. It is no longer what serves `app.freedomfromfiat.com` — confirm in the Render dashboard whether that old service still exists/is running before assuming it's fully decommissioned.
 
 > **Note:** Render free-tier services spin down after inactivity. First load after idle may take 30–60 seconds.
 
@@ -161,9 +165,9 @@ Cloudflare SSL has lapsed or there's a configuration issue.
 4. Check GitHub Pages settings in repo → Settings → Pages — confirm custom domain is set
 
 ### Trading dashboard (app.freedomfromfiat.com) is down
-1. Log into [Render](https://render.com) and check service status for `3f-trading-dashboard`
+1. Log into [Render](https://render.com) and check service status for `3f-dc-ops` (renamed to `3F-Payments-App` as of 2026-08-19 — look under whichever name is current)
 2. If suspended due to inactivity, restart the service
-3. Verify the `app` CNAME in Cloudflare still points to `threef-trading-dashboard.onrender.com`
+3. Verify the `app` CNAME in Cloudflare points to that service's current `.onrender.com` subdomain (changes if the service is renamed — see §2 note)
 
 ### Email not delivering
 1. Verify MX record in Cloudflare points to `SMTP.GOOGLE.COM` with priority 1
