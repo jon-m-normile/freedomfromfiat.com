@@ -14,14 +14,15 @@ and Render deployments. Read this before making any domain or deployment changes
 |---|---|
 | `index.html` | Main marketing/landing page |
 | `demo.html` | Public Tax Optimizer demo (embeds Crypto-Tax-Optimizer via iframe) |
-| `trading.html` | Static login page for the trading dashboard |
+| `login.html` | Static login page for the trading dashboard (served at `/login`) |
+| `trading.html` | Redirect stub to `/login` for old links and bookmarks |
 | `plus.html` | Embeds the private Crypto-Tax-Optimizer-Plus app via iframe |
 | `waitlist.html` | Waitlist signup form |
 | `questionnaire.html` | User questionnaire |
 
 ## Login Flow
-- Login buttons on `index.html` link to `trading.html` (static page — loads instantly).
-- `trading.html` renders the login form immediately and silently polls `https://app.freedomfromfiat.com/health` every 2 seconds in the background.
+- Login buttons on `index.html` link to `/login` (`login.html`, static page — loads instantly).
+- `login.html` renders the login form immediately and silently polls `https://app.freedomfromfiat.com/health` every 2 seconds in the background.
 - On form submit: if Render is awake, the form POSTs directly to `https://app.freedomfromfiat.com/login`. If not yet awake, the form is held and submitted automatically once `/health` returns 200.
 - Do NOT link login buttons directly to `app.freedomfromfiat.com` — this wakes Render before the user even types credentials.
 
